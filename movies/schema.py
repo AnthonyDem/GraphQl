@@ -1,7 +1,7 @@
 import graphene
 
 from graphene_django.types import DjangoObjectType, ObjectType
-from models import Actor, Movie
+from .models import Actor, Movie
 
 
 class ActorType(DjangoObjectType):
@@ -140,3 +140,13 @@ class UpdateMovie(graphene.Mutation):
             movie.actors.set(actors)
             UpdateMovie(ok=ok, movie=movie)
         return UpdateMovie(ok=ok, movie=None)
+
+
+class Mutation(graphene.ObjectType):
+    create_actor = CreateActor.Field()
+    update_actor = UpdateActor.Field()
+    create_movie = CreateMovie.Field()
+    update_movie = UpdateMovie.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
